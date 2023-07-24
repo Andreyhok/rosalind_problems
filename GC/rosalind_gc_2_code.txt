@@ -1,0 +1,19 @@
+import re
+s = {}
+file = open("rosalind_gc.txt","r")
+for line in file:
+    line = line.rstrip()
+    if line.startswith(">"):
+        key = line[1:]
+    else:
+        s[key] = s.get(key,"") + line
+file.close()
+
+answer = [None, 0]
+for key in s.keys():
+    string = s[key]
+    gc_content = ((string.count("G") + string.count("C")) / len(string) * 100)
+    if gc_content > answer[1]:
+        answer[1] = gc_content
+        answer[0] = key
+print(answer[0], answer[1], sep="\n")

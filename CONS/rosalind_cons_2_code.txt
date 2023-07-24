@@ -1,0 +1,55 @@
+import numpy as np
+
+
+def get_strings(file_name):
+    strings = []
+    s = ""
+    with open(file_name, "r") as file:
+        file.readline()
+        new_string = True
+        for line in file:
+            line = line.strip()
+            if line.startswith(">"):
+                strings.append(s)
+                new_string = True
+                continue
+            if new_string:
+                s = line
+                new_string = False
+            else:
+                s += line
+    strings.append(s)
+    return strings
+
+
+def get_matrix(strings):
+    n = len(strings)
+    m = len(strings[0])
+
+    matrix = [[0 for i in range(m)] for j in range(4)]
+
+    dic = {
+        "A": 0,
+        "C": 1,
+        "G": 2,
+        "T": 3
+    }
+
+    for i in range(m):
+        for j in range(n):
+            matrix[dic.get(strings[j][i])][i] += 1
+    return matrix
+
+def main():
+    matrix = np.array(get_matrix(get_strings("rosalind_cons.txt")))
+    letters = ["A:", "C:", "G:", "T:"]
+    s = ''.join(map(lambda x: {0: "A", 1: "C", 2: "G", 3: "T"}.get(x), np.argmax(matrix, axis=0, )))
+    with open("rosalind_cons_ans.txt", "w") as file:
+        print(s,file=file, end="\n")
+
+        for i in range(4):
+            print(letters[i], *matrix[i], file= file)
+            print(letters[i], *matrix[i])
+
+if __name__ == '__main__':
+    main()

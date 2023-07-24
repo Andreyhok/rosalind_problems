@@ -1,0 +1,20 @@
+import math
+
+
+def gen_perm(n, pref):
+    if len(pref) == n:
+        print(*pref)
+        return
+    for i in range(1, n + 1):
+        if i not in pref:
+            gen_perm(n, pref + [i])
+
+
+def main():
+    n = int(input())
+    print(math.factorial(n))
+    gen_perm(n, [])
+
+
+if __name__ == '__main__':
+    main()

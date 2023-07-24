@@ -1,0 +1,45 @@
+s = "ACGCACGTGACG"
+t = "GTAC"
+
+
+def find_substring_pos(s, t):
+    """
+
+    :param s: DNA sequence to find subsequence in
+    :param t: query DNA sequence
+    :return: positions for every nuc in subsequence
+    """
+    pos = 0
+    n = len(t)
+    subs_pos = []
+    for i in range(len(s)):
+        if pos >= n:
+            break
+        if s[i] == t[pos]:
+            subs_pos.append(i + 1)
+            pos += 1
+    return subs_pos
+
+
+def main():
+    with open("rosalind_sseq.txt","r") as file:
+        s = []
+        t = []
+        file.readline()
+        trigger = True
+        for line in file:
+            line = line.strip()
+            if line.startswith(">"):
+                trigger = False
+                continue
+            if trigger:
+                s.append(line)
+            else:
+                t.append(line)
+    s = "".join(s)
+    t = "".join(t)
+    print(*find_substring_pos(s,t))
+
+
+if __name__ == '__main__':
+    main()

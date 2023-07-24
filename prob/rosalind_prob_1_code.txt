@@ -1,0 +1,24 @@
+from math import log10
+
+
+def find_prob(seq,gc):
+    p_g = gc / 2
+    p_a = (1 - gc) / 2
+    ats = seq.count("A") + seq.count("T")
+    gcs = seq.count("G") + seq.count("C")
+    return log10(p_g) * gcs + log10(p_a) * ats
+
+
+def main():
+    with open("rosalind_prob.txt", "r") as file:
+        s = file.readline().strip()
+        probs = file.readline().strip()
+    probs = [float(i) for i in probs.split(" ")]
+    ans = []
+    for i in range(len(probs)):
+        ans.append("{:.7}".format(str(find_prob(s,probs[i]))))
+    print(*ans)
+
+
+if __name__ == '__main__':
+    main()

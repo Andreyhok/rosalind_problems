@@ -1,0 +1,63 @@
+def find_lis(seq, n):
+    """
+
+    :param seq: sequence
+    :param n: number of elements
+    :return: longest increasing subsequence
+    """
+    lis = [1] * n
+    prev = [None] * n
+    for i in range(n):
+        for j in range(i):
+            if seq[i] > seq[j] and lis[i] < lis[j] + 1:
+                lis[i] = lis[j] + 1
+                prev[i] = j
+    path = []
+    cur = lis.index(max(lis))
+    while cur is not None:
+        path.append(seq[cur])
+        cur = prev[cur]
+    path.reverse()
+    return path
+
+
+def find_lds(seq, n):
+    """
+
+    :param seq: sequence
+    :param n: number of elements
+    :return: longest decreasing subsequence
+    """
+    lds = [1] * n
+    prev = [None] * n
+    for i in range(n):
+        for j in range(i):
+            if seq[i] < seq[j] and lds[i] < lds[j] + 1:
+                lds[i] = lds[j] + 1
+                prev[i] = j
+    path = []
+    cur = lds.index(max(lds))
+    while cur is not None:
+        path.append(seq[cur])
+        cur = prev[cur]
+    path.reverse()
+    return path
+
+
+def main():
+    with open("rosalind_lgis.txt", "r") as file:
+        n = int(file.readline())
+        s = file.readline().strip()
+        seq = [int(i) for i in s.split(" ")]
+    lis = find_lis(seq, n)
+    lds = find_lds(seq, n)
+    print(lis)
+    print(lds)
+    
+    with open("rosalind_lgis_ans.txt", "w") as file:
+        print(*lis, file=file)
+        print(*lds, file=file)
+
+
+if __name__ == '__main__':
+    main()

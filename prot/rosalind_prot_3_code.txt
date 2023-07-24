@@ -1,0 +1,44 @@
+import re
+translate = {re.compile("GU."): "V",
+             re.compile("GC."): "A",
+             re.compile("GA[UC]"): "D",
+             re.compile("GA[AG]"): "E",
+             re.compile("GG."): "G",
+             re.compile("AU[UCA]"): "I",
+             re.compile("AUG"): "M",
+             re.compile("AC."): "T",
+             re.compile("AA[UC]"): "N",
+             re.compile("AA[AG]"): "K",
+             re.compile("AG[UC]"): "S",
+             re.compile("AG[AG]"): "R",
+             re.compile("CU."): "L",
+             re.compile("CC."): "P",
+             re.compile("CA[UC]"): "H",
+             re.compile("CA[AG]"): "Q",
+             re.compile("CG."): "R",
+             re.compile("UU[UC]"): "F",
+             re.compile("UU[AG]"): "L",
+             re.compile("UC."): "S",
+             re.compile("UA[UC]"): "Y",
+             re.compile("UA[AG]"): "STOP",
+             re.compile("UG[UC]"): "C",
+             re.compile("UGA"): "STOP",
+             re.compile("UGG"): "W"
+             }
+ans = str()
+
+
+def find_matching_regexen(word, dicts=translate):
+    return [description for regex, description in dicts.items() if regex.match(word)]
+
+
+with open("rosalind_prot.txt","r") as f1, open("answer.txt", "w") as f2:
+    s = f1.readline().rstrip()
+    for i in range(0, len(s), 3):
+        acid = find_matching_regexen(s[i:i + 3]).__getitem__(0)
+        if acid == "STOP":
+            print("STOP", i)
+            break
+        else:
+            ans += acid
+    f2.write(ans)

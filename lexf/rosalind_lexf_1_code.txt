@@ -1,0 +1,29 @@
+import re
+
+
+def gen_kmers(n, alphabet, filename, pref=""):
+
+    if n == len(pref):
+        print(pref, file=filename)
+        return
+    for nuc in alphabet:
+        gen_kmers(n, alphabet, filename, pref + nuc)
+
+
+def main():
+    n = 0
+    alphabet = []
+
+    with open("rosalind_lexf.txt", "r") as file:
+        for line in file:
+            line = line.strip()
+            if re.match("[0-9]", line[0]) is not None:
+                n = int(line)
+                break
+            alphabet = line.split()
+    with open("rosalind_lexf_ans.txt", "w") as file:
+        gen_kmers(n, alphabet, file)
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,61 @@
+def find_substrings(s):
+    """
+
+    :param s: string
+    :return: sorted list of substrings l >= 2
+    """
+    ans = []
+    n = len(s)
+    for i in range(n):
+        for j in range(i + 2, n + 1):
+            ans.append(s[i:j])
+    ans.sort(key=lambda x:len(x),reverse=True)
+    return ans
+
+
+def find_motif(patterns, strings):
+    """
+
+    :param patterns: list of substrings you need to find
+    :param strings: list of strings to search into
+    :return: list of common substrings
+    """
+    motifs = []
+    for pattern in patterns:
+        for s in strings:
+            if s.find(pattern) == -1:
+                break
+        else:
+            motifs.append(pattern)
+    return motifs
+
+
+def get_strings(file_name):
+    strings = []
+    s = ""
+    with open(file_name, "r") as file:
+        file.readline()
+        new_string = True
+        for line in file:
+            line = line.strip()
+            if line.startswith(">"):
+                strings.append(s)
+                new_string = True
+                continue
+            if new_string:
+                s = line
+                new_string = False
+            else:
+                s += line
+    strings.sort(key=lambda x:len(x),reverse=True)
+    return strings
+
+def main():
+    strings = get_strings("rosalind_lcsm.txt")
+    shortest = strings[0]
+    answer = find_motif(find_substrings(shortest),strings)
+    print(answer[0])
+
+
+if __name__ == '__main__':
+    main()

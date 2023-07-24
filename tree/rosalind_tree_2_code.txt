@@ -1,0 +1,21 @@
+def get_edges_number(n, m):
+    """
+
+    :param n: number of nodes
+    :param m: number of edges given
+    :return: The minimum number of edges that can be added to the graph to produce a tree
+    """
+
+    return (n - 1) - m
+
+def main():
+    with open("rosalind_tree.txt", "r") as file:
+        n = int(file.readline().strip())
+        m = 0
+        for line in file:
+            m +=1
+    print(get_edges_number(n,m))
+
+
+if __name__ == "__main__":
+    main()

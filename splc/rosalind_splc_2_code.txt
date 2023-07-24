@@ -1,0 +1,78 @@
+import re
+
+codons = """
+UUU F      CUU L      AUU I      GUU V
+UUC F      CUC L      AUC I      GUC V
+UUA L      CUA L      AUA I      GUA V
+UUG L      CUG L      AUG M      GUG V
+UCU S      CCU P      ACU T      GCU A
+UCC S      CCC P      ACC T      GCC A
+UCA S      CCA P      ACA T      GCA A
+UCG S      CCG P      ACG T      GCG A
+UAU Y      CAU H      AAU N      GAU D
+UAC Y      CAC H      AAC N      GAC D
+UAA Stop   CAA Q      AAA K      GAA E
+UAG Stop   CAG Q      AAG K      GAG E
+UGU C      CGU R      AGU S      GGU G
+UGC C      CGC R      AGC S      GGC G
+UGA Stop   CGA R      AGA R      GGA G
+UGG W      CGG R      AGG R      GGG G """
+
+
+def translate_dict(table=codons):
+    cod_dict = {}
+    temp_str = table.strip().split()
+    for i in range(len(temp_str) // 2):
+        cod_dict[temp_str[0::2][i]] = temp_str[1::2][i]
+    return cod_dict
+
+
+def translate_from_dna(matrix, codons_dict):
+    prot = ""
+    matrix = matrix.replace("T","U")
+
+    for i in range(0, len(matrix), 3):
+        acid = codons_dict[matrix[i:i + 3]]
+        if acid == "Stop":
+            print("STOP", i)
+            break
+        else:
+            prot += acid
+    return prot
+
+
+def splicing(matrix, introns):
+    """
+
+    :param matrix: DNA
+    :param introns: list of DNA
+    :return: spliced DNA matrix
+    """
+    for i in introns:
+        matrix = re.sub(i,"",matrix)
+    return matrix
+
+
+def main():
+    matrix = ""
+    introns = []
+    with open("rosalind_splc.txt", "r") as f1, open("answer.txt", "w") as f2:
+        f1.readline()
+        intr = False
+        for line in f1:
+            line = line.strip()
+            if line.startswith(">"):
+                intr = True
+                continue
+            elif intr:
+                introns.append(line)
+            else:
+                matrix += line
+
+        codons_dict = translate_dict()
+        dna_spliced = splicing(matrix,introns)
+        f2.write(translate_from_dna(dna_spliced,codons_dict))
+
+
+if __name__ == '__main__':
+    main()

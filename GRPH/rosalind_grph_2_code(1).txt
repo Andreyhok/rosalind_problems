@@ -1,0 +1,34 @@
+def get_graph(dictionary):
+    graph = {}
+    for key,value in dictionary.items():
+        for k,v in dictionary.items():
+            if k != key:
+                if value[1] == v[0]:
+                    print(key, k)
+                    graph[key] = graph.get(key,[]) + [k]
+    return graph
+
+
+def main():
+    s_dict = {}
+    cur_key = None
+    cur_s = ""
+    with open("rosalind_grph.txt", "r") as file:
+        flag = True
+        cur_key = file.readline().strip()[1:]
+        for line in file:
+            if line.startswith(">"):
+                s_dict[cur_key] = [cur_s[0:3], cur_s[-3:]]
+                cur_s = ""
+                cur_key = line.strip()[1:]
+                s_dict[line.strip()[1:]] = []
+                flag = False
+                continue
+            else:
+                cur_s += line.strip()
+        s_dict[cur_key] = [cur_s[0:3], cur_s[-3:]]
+
+    get_graph(s_dict)
+
+if __name__ == '__main__':
+    main()

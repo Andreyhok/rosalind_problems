@@ -1,0 +1,120 @@
+import re
+
+
+
+def dna_to_rna(dna):
+    return re.sub("T","U", dna)
+
+def reverse_compl(sub_str):
+    """
+
+    :param sub_str:
+    :return:
+    """
+    comp = {
+        "A": "T",
+        "G": "C",
+        "T": "A",
+        "C": "G"
+    }
+    rps = []
+    for nuc in sub_str:
+        rps.append(comp[nuc])
+
+    return "".join(rps[::-1])
+
+
+def starts(rna):
+    starts_lst = []
+    for i in re.finditer("AUG", rna):
+        starts_lst.append(i.start())
+    return starts_lst
+
+
+def tranlation(rna):
+
+    translate = {re.compile("GU."): "V",
+                 re.compile("GC."): "A",
+                 re.compile("GA[UC]"): "D",
+                 re.compile("GA[AG]"): "E",
+                 re.compile("GG."): "G",
+                 re.compile("AU[UCA]"): "I",
+                 re.compile("AUG"): "M",
+                 re.compile("AC."): "T",
+                 re.compile("AA[UC]"): "N",
+                 re.compile("AA[AG]"): "K",
+                 re.compile("AG[UC]"): "S",
+                 re.compile("AG[AG]"): "R",
+                 re.compile("CU."): "L",
+                 re.compile("CC."): "P",
+                 re.compile("CA[UC]"): "H",
+                 re.compile("CA[AG]"): "Q",
+                 re.compile("CG."): "R",
+                 re.compile("UU[UC]"): "F",
+                 re.compile("UU[AG]"): "L",
+                 re.compile("UC."): "S",
+                 re.compile("UA[UC]"): "Y",
+                 re.compile("UA[AG]"): "STOP",
+                 re.compile("UG[UC]"): "C",
+                 re.compile("UGA"): "STOP",
+                 re.compile("UGG"): "W"
+                 }
+    ans = str()
+
+
+    def find_matching_regexen(word, dicts=translate):
+        return [description for regex, description in dicts.items() if regex.match(word)]
+
+    stop = False
+
+    for i in range(0, len(rna), 3):
+        try:
+            acid = find_matching_regexen(rna[i:i + 3]).__getitem__(0)
+        except IndexError:
+            break
+        if acid == "STOP":
+            stop = True
+            break
+        else:
+            ans += acid
+    if not stop:
+        return ""
+    else:
+        return ans
+
+
+def get_string(file_name):
+    s = ""
+    with open(file_name, "r") as file:
+        for line in file:
+            if line.strip().startswith(">"):
+                continue
+            line = line.strip()
+            s += line
+    return s
+
+
+def main():
+    s = get_string("rosalind_orf.txt")
+
+    s2 = dna_to_rna(reverse_compl(s))
+    s = dna_to_rna(s)
+    orfs = []
+    starts_1 = starts(s)
+    starts_2 = starts(s2)
+
+    for st in starts_1:
+        orf = tranlation(s[st:])
+        if len(orf) != 0:
+            orfs.append(orf)
+    for st in starts_2:
+        orf = tranlation(s2[st:])
+        if len(orf) != 0:
+            orfs.append(orf)
+    orfs = set(orfs)
+    for orf in orfs:
+        print(orf)
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,43 @@
+def t_t_ratio(s1,s2):
+    """
+
+    :param s1: DNA string
+    :param s2: DNA string equal length to s1
+    :return: transitions/transversions ratio
+    """
+    nc_types = {
+        "A": "purine",
+        "G": "purine",
+        "C": "pyrimidine",
+        "T": "pyrimidine"
+    }
+    transitions = 0
+    transversions = 0
+    for i in range(len(s1)):
+        if s1[i] == s2[i]:
+            continue
+        if nc_types[s1[i]] == nc_types[s2[i]]:
+            transitions += 1
+        else:
+            transversions += 1
+    return transitions/transversions
+
+def main():
+    with open("rosalind_tran.txt","r") as file:
+        s1 = ""
+        s2 = ""
+        file.readline()
+        flag = True
+        for line in file:
+            if line.startswith(">"):
+                flag = False
+                continue
+            if flag:
+                s1 += line.strip()
+            else:
+                s2 += line.strip()
+
+    print(t_t_ratio(s1,s2))
+
+if __name__ == '__main__':
+    main()

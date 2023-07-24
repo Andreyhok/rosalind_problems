@@ -1,0 +1,71 @@
+def find_shss(seq):
+    """
+    We find one pair of overlapping strings in one cycle and glue them together.
+    This continues until one string remains in the array.
+    :param seq: input strings
+    :return: shortest superstring containing all the given strings
+    """
+    sq = [s for s in seq]
+    while True:
+        if len(seq) == 1:
+            return seq[0]
+
+        for i in range(len(seq)):
+            for j in range(i + 1, len(seq)):
+                n_pf = len(seq[j])  # len of second string
+                pref = seq[j][0:(n_pf // 2) + 1]
+                suf = seq[j][(n_pf // 2) - 1: n_pf]
+                k_suf = seq[i].find(suf)
+                k_pref = seq[i].find(pref)
+                if k_suf != -1:
+
+                    # print(seq[j] + seq[i][k_suf + len(suf):])
+                    # sq.append(seq[j] + seq[i][k_suf + len(suf):])
+                    sq[i] = seq[j] + seq[i][k_suf + len(suf):]
+                    sq.pop(j)
+                    break
+                elif k_pref != -1:
+                    # print(seq[i][0:k_pref] + seq[j])
+                    # sq.append(seq[i][0:k_pref] + seq[j])
+                    sq[i] = seq[i][0:k_pref] + seq[j]
+                    sq.pop(j)
+                    break
+            break
+        seq = [s for s in sq]
+
+
+def get_strings(file_name):
+    """
+
+    :param file_name: name of file with input strings in FASTA format
+    :return: array with strings
+    """
+    strings = []
+    s = ""
+    with open(file_name, "r") as file:
+        file.readline()
+        new_string = True
+        for line in file:
+            line = line.strip()
+            if line.startswith(">"):
+                strings.append(s)
+                new_string = True
+                continue
+            if new_string:
+                s = line
+                new_string = False
+            else:
+                s += line
+    strings.append(s)
+    return strings
+
+
+def main():
+    seq = get_strings("rosalind_long.txt")
+    ans = find_shss(seq)
+    with open("rosalind_long_ans.txt", "w") as file:
+        print(ans, file=file)
+
+
+if __name__ == '__main__':
+    main()

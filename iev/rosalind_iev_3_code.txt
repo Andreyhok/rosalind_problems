@@ -1,0 +1,6 @@
+x = list(map(int, input().split()))
+probs = [1, 1, 1, 0.75, 0.5, 0]
+ans = 0
+for i in range(6):
+    ans += x[i] * probs[i] * 2
+print(ans)

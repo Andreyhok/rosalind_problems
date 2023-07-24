@@ -1,0 +1,16 @@
+from math import factorial
+
+
+def count_perm(n,k):
+    perm_number = 1
+    for i in range(k):
+        perm_number = perm_number * (n - i) % 1000000
+    return perm_number
+
+
+def main():
+    n, k = map(int, input().split())
+    print(count_perm(n, k))
+
+if __name__ == "__main__":
+    main()

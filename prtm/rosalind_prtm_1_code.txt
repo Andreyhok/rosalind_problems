@@ -1,0 +1,11 @@
+weight_alphabet = {}
+mass = 0
+with open("mass_table", "r") as table, open("rosalind_prtm.txt", "r") as prot:
+    for line in table:
+        line = line.rstrip()
+        key, value = line.split("   ")
+        weight_alphabet[key] = float(value)
+    s = prot.readline().rstrip()
+    for i in s:
+        mass += weight_alphabet[i]
+print(mass)

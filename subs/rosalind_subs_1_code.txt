@@ -1,0 +1,16 @@
+file = open("rosalind_subs.txt", "r")
+s = file.readline().rstrip()
+t = file.readline().strip()
+file.close()
+ans = []
+pos = 0
+while True:
+    a = s[pos:].find(t)
+    if a == -1:
+        break
+    ans.append(a + pos + 1)
+    pos += (a + 1)
+file = open("answer.txt", "w")
+for i in ans:
+    file.write(str(i) + " ")
+file.close()

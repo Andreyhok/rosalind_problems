@@ -1,0 +1,60 @@
+def find_substrings(s):
+    """
+
+    :param s: string
+    :return: sorted list of substrings l >= 2
+    """
+    ans = []
+    n = len(s)
+    for i in range(n):
+        for j in range(i + 4, i + 13):
+            st = s[i:j]
+            if len(st) == (j - i):
+                ans.append((st, i+1, len(st)))
+
+    return ans
+
+
+def find_reverse_palindrome(sub_str):
+    """
+
+    :param sub_str:
+    :return:
+    """
+    comp = {
+        "A": "T",
+        "G": "C",
+        "T": "A",
+        "C": "G"
+    }
+    rps = []
+    for i in sub_str:
+        rc = ""
+        for nuc in i[0]:
+            rc += comp[nuc]
+        if i[0] == rc[::-1]:
+            rps.append(i)
+    return rps
+
+
+def get_string(file_name):
+    s = ""
+    with open(file_name, "r") as file:
+        for line in file:
+            if line.strip().startswith(">"):
+                continue
+            line = line.strip()
+            s += line
+    return s
+
+
+def main():
+    s = get_string("rosalind_revp.txt")
+    sub = find_substrings(s)
+    rps = find_reverse_palindrome(sub)
+    for i in rps:
+        print(i[1], i[2])
+
+
+if __name__ == '__main__':
+    main()

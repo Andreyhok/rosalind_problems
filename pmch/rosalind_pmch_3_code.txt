@@ -1,0 +1,32 @@
+from math import factorial
+
+
+def find_pm_rna(s):
+    """
+    A can only interact with U, vice versa. G can only interact with C, vice versa.
+    So the string can be divided in two graphs for AU and GC.
+    For both of them number of perfect matchings is factorial of number of A and G respectfully
+
+    :param s: is an RNA string
+    :return: number of perfect matchings
+    """
+
+    number_a = s.count("A")
+    number_g = s.count("G")
+    return factorial(number_a) * factorial(number_g)
+
+
+def main():
+    with open("rosalind_pmch.txt","r") as file:
+        s = []
+        for line in file:
+            line = line.strip()
+            if line.startswith(">"):
+                continue
+            s.append(line)
+        s = "".join(s)
+    print(find_pm_rna(s))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,31 @@
+def find_prob(n,gc, seq):
+    """
+    p_string -- вероятность существования строки seq
+    p_string^n -- вероятность одновременного существования n таких строк
+    1 - p_string -- вероятность не существования такой строки
+    (1 - p_string)^n -- вероятность того, что ни одна из n строк не равна строке seq?
+    1 - (1 - p_string)^n -- вероятность того, что хотябы одна из n строк равна строке seq?
+    Как так?
+    :param n:
+    :param gc:
+    :param seq:
+    :return:
+    """
+    p_g = gc / 2
+    p_a = (1 - gc) / 2
+    ats = seq.count("A") + seq.count("T")
+    gcs = seq.count("G") + seq.count("C")
+    p_string = (p_g**gcs) * (p_a**ats)
+    prob = 1 - ((1 - p_string)**n)
+    return prob
+
+
+def main():
+    with open("rosalind_rstr.txt","r") as file:
+        n,gc = map(float, file.readline().strip().split())
+        seq = file.readline().strip()
+    print("%0.3f" % find_prob(n,gc, seq))
+
+
+if __name__ == '__main__':
+    main()

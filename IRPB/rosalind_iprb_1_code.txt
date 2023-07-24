@@ -1,0 +1,15 @@
+k, m, n = (int(input()) for i in range(3))
+total = k + m + n
+
+
+def comb2(c):
+    return (c * (c-1)) / 2
+
+
+p1 = k * m / comb2(total)
+p2 = k * n / comb2(total)
+p3 = comb2(k) / comb2(total)
+p4 = (m * n / comb2(total)) * 0.5
+p5 = (comb2(m) / comb2(total)) * 0.75
+
+print(p1 + p2 + p3 + p4 + p5)
