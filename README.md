@@ -1,2 +1,2 @@
 # rosalind_problems
-Rep for Bioinformatics stronghold problems solutions
+Rep for Rosalid's Bioinformatics stronghold problems solutions. https://rosalind.info/problems/list-view/
